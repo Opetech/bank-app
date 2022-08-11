@@ -2,39 +2,47 @@ package com.example.bankapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity {
+import com.example.bankapp.model.User;
+import com.example.bankapp.sql.DatabaseHelper;
 
-    public static final String MyPREFERENCES = "UserInformation";
+public class LoginActivity extends AppCompatActivity {
+    private final AppCompatActivity activity = LoginActivity.this;
     EditText email, password;
     Button loginSubmitBtn;
-    SharedPreferences sharedpreferences;
+    DatabaseHelper databaseHelper;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        initViewVariables();
+        initObjects();
         handleLoginAction();
     }
 
-    private void handleLoginAction() {
-
+    private void initViewVariables() {
         email = (EditText) findViewById(R.id.loginEmailAddress);
         password = (EditText) findViewById(R.id.loginPassword);
         loginSubmitBtn = (Button) findViewById(R.id.loginSubmitBtn);
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+    }
+
+    private void initObjects() {
+        databaseHelper = new DatabaseHelper(activity);
+        user = new User();
+    }
+
+    private void handleLoginAction() {
 
         loginSubmitBtn.setOnClickListener(view -> {
             if (!isEmail(email)) {
@@ -42,12 +50,18 @@ public class LoginActivity extends AppCompatActivity {
             } else if (isEmpty(password)) {
                 password.setError("Password field cannot be empty");
             } else {
-                String getEmail = sharedpreferences.getString("email", "");
-                String getPassword = sharedpreferences.getString("password", "");
-                if (getEmail.equals(email.getText().toString()) && getPassword.equals(password.getText().toString())) {
-                    startActivity(new Intent(this, DashboardActivity.class));
-                } else {
-                    Toast.makeText(LoginActivity.this, "Invalid Login Details", Toast.LENGTH_LONG).show();
+                try {
+                    Object user = databaseHelper.checkUser(email.getText().toString(), password.getText().toString());
+                    if (user instanceof User) {
+                        User userDetails = (User) user;
+                        Intent intent = new Intent(this, DashboardActivity.class);
+                        intent.putExtra("firstname", userDetails.getFirstname());
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Invalid Login Details", Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
