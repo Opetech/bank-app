@@ -5,7 +5,8 @@
       <map>
         <entry key="..\:/Users/USER/AndroidStudioProjects/BankApp/app/src/main/res/drawable/get_started_btn.xml" value="0.1415" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/BankApp/app/src/main/res/drawable/ic_back.xml" value="0.123" />
-        <entry key="..\:/Users/USER/AndroidStudioProjects/BankApp/app/src/main/res/layout/activity_dashboard.xml" value="0.1388888888888889" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/BankApp/app/src/main/res/drawable/ic_baseline_person_outline_24.xml" value="0.1455" />
+        <entry key="..\:/Users/USER/AndroidStudioProjects/BankApp/app/src/main/res/layout/activity_dashboard.xml" value="0.1" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/BankApp/app/src/main/res/layout/activity_index.xml" value="0.1" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/BankApp/app/src/main/res/layout/activity_login.xml" value="0.17" />
         <entry key="..\:/Users/USER/AndroidStudioProjects/BankApp/app/src/main/res/layout/activity_register.xml" value="0.1" />
